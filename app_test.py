@@ -18,9 +18,14 @@ client = AzureOpenAI(
 
 def chat(message, history):
     messages = [{"role": "system", "content": "You are a helpful assistant."}]
-    for user_msg, bot_msg in history:
-        messages.append({"role": "user", "content": user_msg})
-        messages.append({"role": "assistant", "content": bot_msg})
+    for item in history:
+        # Handle both old tuple format and new dict format
+        if isinstance(item, dict):
+            messages.append({"role": item["role"], "content": item["content"]})
+        else:
+            user_msg, bot_msg = item
+            messages.append({"role": "user", "content": user_msg})
+            messages.append({"role": "assistant", "content": bot_msg})
     messages.append({"role": "user", "content": message})
 
     response = client.chat.completions.create(
@@ -29,7 +34,7 @@ def chat(message, history):
     )
     return response.choices[0].message.content
 
-demo = gr.ChatInterface(fn=chat, title="Foundry GPT-4o-mini")
+demo = gr.ChatInterface(fn=chat, title="ADEX2 sabdbox Foundry Agent TEST")
 
 if __name__ == "__main__":
     demo.launch(server_name="0.0.0.0", server_port=7860)
