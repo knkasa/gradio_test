@@ -42,7 +42,7 @@ def chat(message, history, request: gr.Request):
     )
     return response.choices[0].message.content
 
-demo = gr.ChatInterface(fn=chat, title="ADEX2 sabdbox Foundry Agent TEST")
+demo = gr.ChatInterface(fn=chat, title="ADEX2 Sabdbox Foundry Agent TEST")
 
 if __name__ == "__main__":
     demo.launch(server_name="0.0.0.0", server_port=7860)
