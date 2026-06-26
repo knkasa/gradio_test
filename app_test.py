@@ -19,13 +19,17 @@ client = AzureOpenAI(
 def chat(message, history):
     messages = [{"role": "system", "content": "You are a helpful assistant."}]
     for item in history:
-        # Handle both old tuple format and new dict format
         if isinstance(item, dict):
-            messages.append({"role": item["role"], "content": item["content"]})
+            # Gradio 4.x dict format
+            if item.get("content") is not None:
+                messages.append({"role": item["role"], "content": item["content"]})
         else:
+            # Old tuple format
             user_msg, bot_msg = item
-            messages.append({"role": "user", "content": user_msg})
-            messages.append({"role": "assistant", "content": bot_msg})
+            if user_msg is not None:
+                messages.append({"role": "user", "content": user_msg})
+            if bot_msg is not None:
+                messages.append({"role": "assistant", "content": bot_msg})
     messages.append({"role": "user", "content": message})
 
     response = client.chat.completions.create(
