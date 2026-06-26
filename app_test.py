@@ -16,7 +16,11 @@ client = AzureOpenAI(
     api_version="2024-10-21",
 )
 
-def chat(message, history):
+def chat(message, history, request: gr.Request):
+    username = request.headers.get("x-ms-client-principal-name", "unknown")
+    print(f"User: {username}, Message: {message}")  # shows in Container App logs
+    
+    # rest of your chat function...
     messages = [{"role": "system", "content": "You are a helpful assistant."}]
     for item in history:
         if isinstance(item, dict):
