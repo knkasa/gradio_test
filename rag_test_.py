@@ -67,3 +67,33 @@ response = openai_client.responses.create(
 
 print("\nAnswer:\n")
 print(response.output_text)
+
+'''
+#===========================================================
+# If you want to just query the chunck, run below.
+# python -m pip install azure-search-documents azure-identity
+
+from azure.identity import DefaultAzureCredential
+from azure.search.documents import SearchClient
+
+client = SearchClient(
+    endpoint="https://ai-search-nakatsukasa1.search.windows.net",
+    index_name="YOUR_INDEX_NAME",
+    credential=DefaultAzureCredential(),
+)
+
+# "*" returns indexed documents without asking an LLM a question.
+results = client.search(
+    search_text="*",
+    select=["chunk_id", "title", "chunk"],
+    top=10,
+)
+
+for number, result in enumerate(results, start=1):
+    print(f"\n--- Chunk {number} ---")
+    print("ID:", result.get("chunk_id"))
+    print("Source:", result.get("title"))
+    print("Text:\n", result.get("chunk"))
+
+#============================================================
+'''
