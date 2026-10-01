@@ -30,7 +30,7 @@ search_tool = AzureAISearchTool(
                 project_connection_id=connection.id,
                 index_name=SEARCH_INDEX_NAME,
                 # Start with simple search for the first connectivity test.
-                query_type=AzureAISearchQueryType.SIMPLE,
+                query_type=AzureAISearchQueryType.SIMPLE,  #************ SIMPLE=keword search.  Change this to others.
             )
         ]
     )
